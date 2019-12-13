@@ -7,6 +7,9 @@ from pc_mian import get_data, get_info
 app = Flask(__name__)
 
 
+# 添加地点对应字符串
+
+
 @app.route('/', methods=["POST"])
 def hello_world():
     HEAD = {
