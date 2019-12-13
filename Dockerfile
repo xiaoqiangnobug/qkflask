@@ -1,4 +1,4 @@
-FROM serebrov/ubuntu-python3
+FROM rauliu/ubuntu-dev
 MAINTAINER xioqiangnobug 15229370298@163.com
 WORKDIR /usr/src
 RUN apt install pip3 -y
