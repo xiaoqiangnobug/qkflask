@@ -1,4 +1,4 @@
-FROM ubuntu-dev:latest
+FROM fnndsc/ubuntu-python3
 MAINTAINER xioqiangnobug 15229370298@163.com
 WORKDIR /usr/src
 RUN git clone https://github.com/xiaoqiangnobug/qkflask.git
