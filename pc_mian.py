@@ -15,10 +15,13 @@ def cl_date(d, c):
 
 # 航班信息处理函数
 def fenxi_info(i):
-    info = i
+    info = i.get('journey').get('trips')[0].get("flightSegments")
+    fares_info = i.get("price")
+
     # 判断是否直达
     if len(info) == 1:
         start_info = info[0]
+
         info_list = [{
             "flightNumber": start_info.get('code'),
             "carrier": start_info.get("carrierCode"),
@@ -35,6 +38,27 @@ def fenxi_info(i):
             "cabins": "V"
         }]
 
+        fares = [
+            {
+                "priceType": fares_info.get("priceType"),
+                "tripType": "",
+                "packageType": "Regular",
+                "adultPrice": fares_info.get("lowPrice"),
+                "adultTax": fares_info.get("tax"),
+                "childPrice": fares_info.get("lowChildPrice"),
+                "childTax": fares_info.get("lowChildTax"),
+                "infantPrice": "",
+                "infantTax": "",
+                "currency": fares_info.get("currencyCode"),
+                "cabinCode": "",
+                "cabinlevel": "",
+                "cabinNum": "",
+                "cabins": "Z/E",
+                "fareBase": fares_info.get("lowChildPrice"),
+                "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
+            }
+        ]
+
         if info_list[0]:
             return {
                 "arrCity": start_info.get("arrCityCode"),
@@ -43,7 +67,8 @@ def fenxi_info(i):
                 "depDate": cl_date(start_info.get("depDate"), '-'),
                 "retDate": "",
                 "meg": "success",
-                "fromSegments": info_list
+                "fromSegments": info_list,
+                "fares": fares
             }
         return {
                 "arrCity": "",
@@ -52,7 +77,8 @@ def fenxi_info(i):
                 "depDate": "",
                 "retDate": "",
                 "meg": "fail",
-                "fromSegments": ""
+                "fromSegments": "",
+                "fares": ""
             }
     else:
         # 初始化空列表，不能再for中初始化，避免每次重复
@@ -77,6 +103,27 @@ def fenxi_info(i):
 
         # 判断是否有数据
         if info[0]:
+            fares = [
+                {
+                    "priceType": fares_info.get("priceType"),
+                    "tripType": "",
+                    "packageType": "Regular",
+                    "adultPrice": fares_info.get("lowPrice"),
+                    "adultTax": fares_info.get("tax"),
+                    "childPrice": fares_info.get("lowChildPrice"),
+                    "childTax": fares_info.get("lowChildTax"),
+                    "infantPrice": "",
+                    "infantTax": "",
+                    "currency": fares_info.get("currencyCode"),
+                    "cabinCode": "",
+                    "cabinlevel": "",
+                    "cabinNum": "",
+                    "cabins": "Z/E",
+                    "fareBase": fares_info.get("lowChildPrice"),
+                    "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
+                }
+            ]
+
             return {
                 "arrCity": info[-1].get("arrCityCode"),
                 "carrier": info[-1].get("carrierCode"),
@@ -84,7 +131,8 @@ def fenxi_info(i):
                 "depDate": cl_date(info[0].get("depDate"), '-'),
                 "retDate": "",
                 "meg": "success",
-                "fromSegments": info_list
+                "fromSegments": info_list,
+                "fares": fares
             }
 
         return {
@@ -94,7 +142,8 @@ def fenxi_info(i):
                 "depDate": "",
                 "retDate": "",
                 "meg": "fail",
-                "fromSegments": ""
+                "fromSegments": "",
+                "farse": ""
             }
 
 
@@ -122,7 +171,7 @@ data = {
 }
 
 
-# 爬取函数
+# 爬取信息
 def get_data(data, head):
     response = requests.get(url, params=data, headers=head)
     response.encoding = "utf-8"
@@ -143,10 +192,12 @@ info = get_data(data, HEAD)
 
 
 # 单程信息处理函数
-def get_info(xinxi: dict):
+def get_info(xinxi: dict, carrier):
     jipiao = []
     for i in xinxi.values():
-        jipiao.append(fenxi_info(i.get('journey').get('trips')[0].get("flightSegments")))
+        s = fenxi_info(i)
+        if s.get("carrier") == carrier or carrier == None:
+            jipiao.append(s)
     return jipiao
 
 
