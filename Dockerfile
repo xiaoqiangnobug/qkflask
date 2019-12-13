@@ -1,7 +1,6 @@
 FROM rauliu/ubuntu-dev
 MAINTAINER xioqiangnobug 15229370298@163.com
 WORKDIR /usr/src
-RUN apt install pip3 -y
 RUN git clone https://github.com/xiaoqiangnobug/qkflask.git
 WORKDIR /usr/src/qkflask
 RUN pip install -r requesments.txt -i https://mirrors.aliyun.com/pypi/simple
