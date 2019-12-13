@@ -1,7 +1,6 @@
 FROM fnndsc/ubuntu-python3
 MAINTAINER xioqiangnobug 15229370298@163.com
 WORKDIR /usr/src
-RUN apt-get install git -Y
 RUN git clone https://github.com/xiaoqiangnobug/qkflask.git
 WORKDIR /usr/src/qkflask
 RUN pip install -r requesments.txt -i https://mirrors.aliyun.com/pypi/simple
