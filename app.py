@@ -3,7 +3,7 @@ from flask import request
 from flask import jsonify
 import time
 
-from pc_mian import get_data, get_info
+from pc_mian import get_data, get_info, f_cl_date
 
 app = Flask(__name__)
 
@@ -38,7 +38,8 @@ def hello_world():
         carrier = request.args.get("carrierCode")  # 出港航空公司两字代码
         depCity = request.args.get('depCity')  # 出发城市
         arrCity = request.args.get("arrCity")  # 到达城市
-        depDate = request.args.get("depDate")  # 出发日期
+        depDate = f_cl_date(request.args.get("depDate"), '-')
+        # 出发日期
         st = int(round(time.time() * 1000))  # 当前时间戳
 
         # 还需要判断请求地点是否正确
@@ -48,12 +49,12 @@ def hello_world():
                 {"st": st, "depCity": depCity, "arrCity": arrCity, "depDate": depDate, "adultNum": 1,
                  "childNum": 0})
             info = get_data(data, HEAD)
-            if type(info) != "str":
-
-                return jsonify({"info": get_info(info, carrier), "code": 200})
+            if type(info) is not str:
+                return jsonify(get_info(info, carrier))
+            else:
+                return jsonify({"code": 400})
         else:
-            return jsonify({"code": 400, "mes": "缺少必要的参数"})
-
+            return jsonify({"code": 400, "mes": ""}, )
 
 
 if __name__ == '__main__':

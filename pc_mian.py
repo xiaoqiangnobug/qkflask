@@ -13,16 +13,18 @@ def cl_date(d, c):
     return "".join(l)
 
 
+# 接收时间格式处理
+def f_cl_date(d, c):
+    return d[:4] + c + d[4:6] + c + d[6:]
+
+
 # 航班信息处理函数
 def fenxi_info(i):
     info = i.get('journey').get('trips')[0].get("flightSegments")
     fares_info = i.get("price")
-
-    # 判断是否直达
-    if len(info) == 1:
-        start_info = info[0]
-
-        info_list = [{
+    info_list = []
+    for start_info in info:
+        info_list.append({
             "flightNumber": start_info.get('code'),
             "carrier": start_info.get("carrierCode"),
             "aircraftCode": start_info.get("planeTypeCode"),
@@ -36,115 +38,33 @@ def fenxi_info(i):
             "realFlightNumber": "",
             "stopCity": "",
             "cabins": "V"
-        }]
+        })
 
-        fares = [
-            {
-                "priceType": fares_info.get("priceType"),
-                "tripType": "",
-                "packageType": "Regular",
-                "adultPrice": fares_info.get("lowPrice"),
-                "adultTax": fares_info.get("tax"),
-                "childPrice": fares_info.get("lowChildPrice"),
-                "childTax": fares_info.get("lowChildTax"),
-                "infantPrice": "",
-                "infantTax": "",
-                "currency": fares_info.get("currencyCode"),
-                "cabinCode": "",
-                "cabinlevel": "",
-                "cabinNum": "",
-                "cabins": "Z/E",
-                "fareBase": fares_info.get("lowChildPrice"),
-                "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
-            }
-        ]
+    fares = [
+        {
+            "priceType": "PRICE",
+            "tripType": "OW",
+            "packageType": "Regular",
+            "adultPrice": fares_info.get("lowPrice"),
+            "adultTax": fares_info.get("tax"),
+            "childPrice": fares_info.get("lowChildPrice"),
+            "childTax": "",
+            "infantPrice": "",
+            "infantTax": "",
+            "currency": fares_info.get("currencyCode"),
+            "cabinCode": "Z/E",
+            "cabinlevel": "",
+            "cabinNum": "",
+            "cabins": "",
+            "fareBase": fares_info.get("lowChildPrice"),
+            "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
+        }
+    ]
 
-        if info_list[0]:
-            return {
-                "arrCity": start_info.get("arrCityCode"),
-                "carrier": start_info.get("carrierCode"),
-                "depCity": start_info.get("depCityCode"),
-                "depDate": cl_date(start_info.get("depDate"), '-'),
-                "retDate": "",
-                "meg": "success",
-                "fromSegments": info_list,
-                "fares": fares
-            }
-        return {
-                "arrCity": "",
-                "carrier": "",
-                "depCity": "",
-                "depDate": "",
-                "retDate": "",
-                "meg": "fail",
-                "fromSegments": "",
-                "fares": ""
-            }
-    else:
-        # 初始化空列表，不能再for中初始化，避免每次重复
-        info_list = []
-
-        for start_info in info:
-            info_list.append({
-                "flightNumber": start_info.get('code'),
-                "carrier": start_info.get("carrierCode"),
-                "aircraftCode": start_info.get("planeTypeCode"),
-                'depAirport': start_info.get('depAirportCode'),
-                "depTerminal": start_info.get('depTerminal'),
-                "depTime": cl_date(start_info.get("depDate"), '-') + cl_date(start_info.get("depTime"), ":"),
-                "arrAirport": start_info.get('arrAirportCode'),
-                "arrTime": cl_date(start_info.get("arrDate"), "-") + cl_date(start_info.get("arrTime"), ":"),
-                "arrTerminal": start_info.get('arrTerminal') if start_info.get('arrTerminal') else "",
-                "shared": start_info.get("codeShareStatus"),
-                "realFlightNumber": "",
-                "stopCity": "",
-                "cabins": "V"
-            })
-
-        # 判断是否有数据
-        if info[0]:
-            fares = [
-                {
-                    "priceType": fares_info.get("priceType"),
-                    "tripType": "",
-                    "packageType": "Regular",
-                    "adultPrice": fares_info.get("lowPrice"),
-                    "adultTax": fares_info.get("tax"),
-                    "childPrice": fares_info.get("lowChildPrice"),
-                    "childTax": fares_info.get("lowChildTax"),
-                    "infantPrice": "",
-                    "infantTax": "",
-                    "currency": fares_info.get("currencyCode"),
-                    "cabinCode": "",
-                    "cabinlevel": "",
-                    "cabinNum": "",
-                    "cabins": "Z/E",
-                    "fareBase": fares_info.get("lowChildPrice"),
-                    "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
-                }
-            ]
-
-            return {
-                "arrCity": info[-1].get("arrCityCode"),
-                "carrier": info[-1].get("carrierCode"),
-                "depCity": info[0].get("depCityCode"),
-                "depDate": cl_date(info[0].get("depDate"), '-'),
-                "retDate": "",
-                "meg": "success",
-                "fromSegments": info_list,
-                "fares": fares
-            }
-
-        return {
-                "arrCity": "",
-                "carrier": "",
-                "depCity": "",
-                "depDate": "",
-                "retDate": "",
-                "meg": "fail",
-                "fromSegments": "",
-                "farse": ""
-            }
+    return {
+        "fromSegments": info_list,
+        "fares": fares
+    }
 
 
 # 请求头
@@ -177,27 +97,35 @@ def get_data(data, head):
     response.encoding = "utf-8"
 
     if response.status_code == 200:
-        while True:
-            try:
-                response.json()['code']
-            except:
-                data = response.json().get("result").get("flightPrices")
-                return data if data else "数据解析失败"
-            else:
-                return "数据获取失败!"
+        try:
+            response.json()['code']
+        except:
+            data = response.json().get("result")
+            return data.get("flightPrices") if data else "数据解析失败"
+        else:
+            return "数据获取失败!"
     return "请求失败"
 
 
-info = get_data(data, HEAD)
 
 
 # 单程信息处理函数
 def get_info(xinxi: dict, carrier):
-    jipiao = []
+    head_info = xinxi.get(random.choice(list(xinxi.keys())))
+    jp = []
+    jipiao = {
+        "arrCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("arrCityCode"),
+        "carrier": head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("carrierCode"),
+        "depCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
+        "depDate": cl_date(head_info.get('journey').get('trips')[0].get("flightSegments")[0].get('depDate'), '-'),
+        "retDate": "",
+        "meg": "success",
+    }
     for i in xinxi.values():
         s = fenxi_info(i)
         if s.get("carrier") == carrier or carrier == None:
-            jipiao.append(s)
+            jp.append(s)
+        jipiao.update({"routings": jp})
     return jipiao
 
 
