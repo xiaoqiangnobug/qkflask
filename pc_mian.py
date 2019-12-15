@@ -122,9 +122,10 @@ def get_info(xinxi: dict, carrier):
     }
     for i in xinxi.values():
         s = fenxi_info(i)
-        if s.get("carrier") == carrier or carrier == None:
+        if i.get('journey').get('trips')[0].get("flightSegments")[0].get("carrierCode") == carrier or carrier == None:
             jp.append(s)
         jipiao.update({"routings": jp})
+
     return jipiao
 
 
