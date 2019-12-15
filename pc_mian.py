@@ -93,7 +93,8 @@ data = {
 
 # 爬取信息
 def get_data(data, head):
-    response = requests.get(url, params=data, headers=head)
+    response = requests.get(url, params=data, headers=head, proxies={"http": 'xiy_001:G232323@60.17.232.113:36912',
+                                                                     "https": "xiy_001:G232323@60.17.232.113:36912"})
     response.encoding = "utf-8"
 
     if response.status_code == 200:
@@ -105,8 +106,6 @@ def get_data(data, head):
         else:
             return "数据获取失败!"
     return "请求失败"
-
-
 
 
 # 单程信息处理函数
