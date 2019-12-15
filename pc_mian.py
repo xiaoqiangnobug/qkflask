@@ -114,7 +114,7 @@ def get_info(xinxi: dict, carrier):
     jp = []
     jipiao = {
         "arrCity": head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
-        "carrier": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("carrierCode"),
+        "carrier": carrier,
         "depCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
         "depDate": cl_date(head_info.get('journey').get('trips')[0].get("flightSegments")[0].get('depDate'), '-'),
         "retDate": "",
@@ -125,6 +125,10 @@ def get_info(xinxi: dict, carrier):
         if i.get('journey').get('trips')[0].get("flightSegments")[0].get("carrierCode") == carrier or carrier == None:
             jp.append(s)
         jipiao.update({"routings": jp})
+
+    if not jp:
+        jipiao.update({"status": -1})
+        return jipiao
 
     return jipiao
 
