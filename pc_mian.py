@@ -113,8 +113,8 @@ def get_info(xinxi: dict, carrier):
     head_info = xinxi.get(random.choice(list(xinxi.keys())))
     jp = []
     jipiao = {
-        "arrCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("arrCityCode"),
-        "carrier": head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("carrierCode"),
+        "arrCity": head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
+        "carrier": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("carrierCode"),
         "depCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
         "depDate": cl_date(head_info.get('journey').get('trips')[0].get("flightSegments")[0].get('depDate'), '-'),
         "retDate": "",
