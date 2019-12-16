@@ -1,6 +1,9 @@
+
 import requests
 import time
 import random
+from tool import get_ip
+
 
 t = time.time()
 st = int(round(t * 1000))
@@ -92,9 +95,19 @@ data = {
 
 
 # 爬取信息
-def get_data(data, head):
-    response = requests.get(url, params=data, headers=head, proxies={"http": 'xiy_001:G232323@60.17.232.113:36912',
-                                                                     "https": "xiy_001:G232323@60.17.232.113:36912"})
+def get_data(data, head,):
+    response = ''
+    for _ in '123':
+        self_ip = get_ip()
+        try:
+            response = requests.get(url, params=data, headers=head, proxies=self_ip if self_ip else None, timeout=10)
+        except:
+            print('重新获取代理中...')
+        else:
+            break
+    if not response:
+        return {"code": -2}
+    response = requests.get(url, params=data, headers=head, proxies=self_ip if self_ip else None, timeout=10000)
     response.encoding = "utf-8"
 
     if response.status_code == 200:
@@ -141,3 +154,7 @@ def get_infos(xinxi: dict):
         jipiao.append({"qu": fenxi_info(i.get('journey').get('trips')[0].get("flightSegments")),
                        "fan": fenxi_info(i.get('journey').get('trips')[1].get("flightSegments"))})
     return jipiao
+
+
+if __name__ == "__main__":
+    pass

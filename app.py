@@ -1,3 +1,4 @@
+from tool import code_city
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -45,10 +46,20 @@ def hello_world():
         # 还需要判断请求地点是否正确
 
         if all((depCity, arrCity, depDate)):
+            # 城市代码转换
+            arrCity = code_city(arrCity)
+            depCity = code_city(depCity)
+            #查看转换是否成功
+            if not all([arrCity, depDate]):
+                return {"status": -2}
+
+            # 更新请求参数
             data.update(
                 {"st": st, "depCity": depCity, "arrCity": arrCity, "depDate": depDate, "adultNum": 1,
                  "childNum": 0})
             info = get_data(data, HEAD)
+            if info.get('code') == -2:
+                return {"status": -2}
             if type(info) is not str:
                 return jsonify(get_info(info, carrier))
             else:
