@@ -56,7 +56,7 @@ def hello_world():
             # 更新请求参数
             data.update(
                 {"st": st, "depCity": depCity, "arrCity": arrCity, "depDate": depDate, "adultNum": 1,
-                 "childNum": 0})
+                 "childNum": 0, "carrier": carrier})
             info = get_data(data, HEAD)
             if info.get('code') == -2:
                 return {"status": -2}

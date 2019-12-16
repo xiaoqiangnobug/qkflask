@@ -1,9 +1,7 @@
-
 import requests
 import time
 import random
 from tool import get_ip
-
 
 t = time.time()
 st = int(round(t * 1000))
@@ -26,7 +24,8 @@ def fenxi_info(i):
     info = i.get('journey').get('trips')[0].get("flightSegments")
     fares_info = i.get("price")
     info_list = []
-    for start_info in info:
+    for j, start_info in enumerate(info):
+        j += 1
         info_list.append({
             "flightNumber": start_info.get('code'),
             "carrier": start_info.get("carrierCode"),
@@ -40,9 +39,8 @@ def fenxi_info(i):
             "shared": start_info.get("codeShareStatus"),
             "realFlightNumber": "",
             "stopCity": "",
-            "cabins": "V"
+            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2*j-2]
         })
-
     fares = [
         {
             "priceType": "PRICE",
@@ -51,16 +49,16 @@ def fenxi_info(i):
             "adultPrice": fares_info.get("lowPrice"),
             "adultTax": fares_info.get("tax"),
             "childPrice": fares_info.get("lowChildPrice"),
-            "childTax": "",
+            "childTax": fares_info.get("childTaxType"),
             "infantPrice": "",
             "infantTax": "",
-            "currency": fares_info.get("currencyCode"),
-            "cabinCode": "Z/E",
-            "cabinlevel": "",
+            "currency": "CNY",
+            "cabinCode": fares_info.get("priceTag"),
+            "cabinlevel": fares_info.get("totalCainLevel"),
             "cabinNum": "",
-            "cabins": "",
+            "cabins": fares_info.get("lowPriceBase").get("cabin"),
             "fareBase": fares_info.get("lowChildPrice"),
-            "info": "{\"supplier\": \"rfb.trade.qunar.com\"}"
+            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain") + "\""}),
         }
     ]
 
@@ -95,7 +93,7 @@ data = {
 
 
 # 爬取信息
-def get_data(data, head,):
+def get_data(data, head, ):
     response = ''
     for _ in '123':
         self_ip = get_ip()
