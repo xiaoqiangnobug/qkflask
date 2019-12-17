@@ -58,7 +58,7 @@ def fenxi_info(i):
             "cabinNum": "",
             "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
-            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain") + "\""}),
+            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain", '') + "\""}),
         }
     ]
 
