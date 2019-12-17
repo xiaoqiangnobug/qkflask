@@ -38,7 +38,7 @@ def fenxi_info(i):
             "shared": start_info.get("codeShareStatus"),
             "realFlightNumber": "",
             "stopCity": "",
-            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2 * j - 2]
+            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2 * j - 2] if fares_info.get("lowPriceBase").get("cabin") else ''
         })
     fares = [
         {
