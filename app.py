@@ -46,22 +46,19 @@ def hello_world():
         # 还需要判断请求地点是否正确
 
         if all((depCity, arrCity, depDate, carrier)):
-            # 城市代码转换
-            arrCity = code_city(arrCity)
-            depCity = code_city(depCity)
             # 查看转换是否成功
-            if not all([arrCity, depDate]):
-                return {"status": -2}
+            if not all([code_city(arrCity), code_city(depCity)]):
+                return jsonify({"code": 400, "msg": "获取三字代码失败", "status": -2}, )
 
             # 更新请求参数
             data.update(
-                {"st": st, "depCity": depCity, "arrCity": arrCity, "depDate": depDate, "adultNum": 1,
+                {"st": st, "depCity": code_city(depCity), "arrCity":code_city(arrCity), "depDate": depDate, "adultNum": 1,
                  "childNum": 0, "carrier": carrier})
             info = get_data(data, HEAD)
             if info.get('code') == -2:
                 return jsonify(info)
             if type(info) is not str:
-                return jsonify(get_info(xinxi=info, carrier=carrier, depDate=depDate, depCity=depCity, arrCity=arrCity))
+                return jsonify(get_info(xinxi=info, carrier=carrier, depDate=depDate, depCity=depCity.upper(), arrCity=arrCity.upper()))
             else:
                 return jsonify({"status": -3, "msg": "信息解析错误"})
         else:

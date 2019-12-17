@@ -54,11 +54,11 @@ def fenxi_info(i):
             "currency": "CNY",
             "cabinCode": fares_info.get("lowPriceBase").get("cabin"),
             "cabinlevel": "",
-            "cabinNum": "2",
+            "cabinNum": 2,
             "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
 
-            "info": str({r"\"supplier\"": r"\"" + fares_info.get("originDomain", '') + r"\""}),
+            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain", '') + "\""}),
 
         }
     ]
@@ -114,7 +114,7 @@ def get_data(data, head, ):
             response.json()['code']
         except:
             data = response.json().get("result")
-            return data.get("flightPrices") if data else "数据解析失败"
+            return data.get("flightPrices") if data else {"code": -2, "msg": "请求未返回json数据", "status": -2}
         else:
             return {"code": -2, "msg": "请求成功，未返回任何数据", "status": -2}
     return {"code": -2, "msg": "代理有效，抓取数据超时", "status": -2}
@@ -124,7 +124,7 @@ def get_data(data, head, ):
 def get_info(xinxi: dict, carrier, depCity, depDate, arrCity):
     jp = []
     jipiao = {
-        "arrCity": arrCity,  # head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
+        "arrCity": arrCity,
         "carrier": carrier,
         "depCity": depCity,  # head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
         "depDate": cl_date(depDate, '-'),
