@@ -54,11 +54,11 @@ def fenxi_info(i):
             "currency": "CNY",
             "cabinCode": fares_info.get("lowPriceBase").get("cabin"),
             "cabinlevel": "",
-            "cabinNum": "",
+            "cabinNum": "2",
             "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
 
-            "info": {r"\"supplier\"": r"\"" + fares_info.get("originDomain", '') + r"\""},
+            "info": str({r"\"supplier\"": r"\"" + fares_info.get("originDomain", '') + r"\""}),
 
         }
     ]
