@@ -65,7 +65,7 @@ def hello_world():
             else:
                 return jsonify({"code": 400})
         else:
-            return jsonify({"code": 400, "mes": "信息参数格式不正确", "status": -2}, )
+            return jsonify({"code": 400, "mes": "信息参数格式不正确, 请确认参数全部存在且格式正确", "status": -2}, )
 
 
 if __name__ == '__main__':
