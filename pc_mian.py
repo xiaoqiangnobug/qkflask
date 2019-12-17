@@ -22,9 +22,9 @@ def f_cl_date(d, c):
 def fenxi_info(i):
     info = i.get('journey').get('trips')[0].get("flightSegments")
     fares_info = i.get("price")
+    cabins = fares_info.get("lowPriceBase").get("cabin")
     info_list = []
     for j, start_info in enumerate(info):
-        j += 1
         info_list.append({
             "flightNumber": start_info.get('code'),
             "carrier": start_info.get("carrierCode"),
@@ -38,8 +38,9 @@ def fenxi_info(i):
             "shared": start_info.get("codeShareStatus"),
             "realFlightNumber": "",
             "stopCity": "",
-            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2 * j - 2] if fares_info.get("lowPriceBase").get("cabin") else ''
+            "cabins": cabins[2 * (j + 1) - 2] if len(cabins) > 1 else cabins,
         })
+
     fares = [
         {
             "priceType": "PRICE",
@@ -47,8 +48,8 @@ def fenxi_info(i):
             "packageType": "Regular",
             "adultPrice": fares_info.get("lowPrice"),
             "adultTax": fares_info.get("tax"),
-            "childPrice": fares_info.get("lowChildPrice"),
-            "childTax": fares_info.get("childTaxType"),
+            "childPrice": "",
+            "childTax": "",
             "infantPrice": "",
             "infantTax": "",
             "currency": "CNY",
@@ -58,7 +59,7 @@ def fenxi_info(i):
             "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
 
-            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain", '') + "\""}),
+            "info": "{\"supplier\"" + ": " + "\"" + str(fares_info.get("originDomain", '')) + "\"}",
 
         }
     ]
