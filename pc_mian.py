@@ -39,7 +39,7 @@ def fenxi_info(i):
             "shared": start_info.get("codeShareStatus"),
             "realFlightNumber": "",
             "stopCity": "",
-            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2*j-2]
+            "cabins": (fares_info.get("lowPriceBase").get("cabin"))[2 * j - 2]
         })
     fares = [
         {
@@ -53,10 +53,10 @@ def fenxi_info(i):
             "infantPrice": "",
             "infantTax": "",
             "currency": "CNY",
-            "cabinCode": fares_info.get("priceTag"),
-            "cabinlevel": fares_info.get("totalCainLevel"),
+            "cabinCode": fares_info.get("lowPriceBase").get("cabin"),
+            "cabinlevel": "",
             "cabinNum": "",
-            "cabins": fares_info.get("lowPriceBase").get("cabin"),
+            "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
             "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain") + "\""}),
         }
@@ -120,14 +120,14 @@ def get_data(data, head, ):
 
 
 # 单程信息处理函数
-def get_info(xinxi: dict, carrier):
-    head_info = xinxi.get(random.choice(list(xinxi.keys())))
+def get_info(xinxi: dict, carrier, depCity, depDate, arrCity):
+    # head_info = xinxi.get(random.choice(list(xinxi.keys())))
     jp = []
     jipiao = {
-        "arrCity": head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
+        "arrCity": arrCity,  # head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
         "carrier": carrier,
-        "depCity": head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
-        "depDate": cl_date(head_info.get('journey').get('trips')[0].get("flightSegments")[0].get('depDate'), '-'),
+        "depCity": depCity,  # head_info.get('journey').get('trips')[0].get("flightSegments")[0].get("depCityCode"),
+        "depDate": cl_date(depDate, '-'),
         "retDate": "",
         "meg": "success",
     }

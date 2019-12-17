@@ -45,11 +45,11 @@ def hello_world():
 
         # 还需要判断请求地点是否正确
 
-        if all((depCity, arrCity, depDate)):
+        if all((depCity, arrCity, depDate, carrier)):
             # 城市代码转换
             arrCity = code_city(arrCity)
             depCity = code_city(depCity)
-            #查看转换是否成功
+            # 查看转换是否成功
             if not all([arrCity, depDate]):
                 return {"status": -2}
 
@@ -59,13 +59,13 @@ def hello_world():
                  "childNum": 0, "carrier": carrier})
             info = get_data(data, HEAD)
             if info.get('code') == -2:
-                return {"status": -2}
+                return {"code": 400, "mes": "三次请求失败", "status": -2}
             if type(info) is not str:
-                return jsonify(get_info(info, carrier))
+                return jsonify(get_info(xinxi=info, carrier=carrier, depDate=depDate, depCity=depCity, arrCity=arrCity))
             else:
                 return jsonify({"code": 400})
         else:
-            return jsonify({"code": 400, "mes": ""}, )
+            return jsonify({"code": 400, "mes": "信息参数格式不正确", "status": -2}, )
 
 
 if __name__ == '__main__':
