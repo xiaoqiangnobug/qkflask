@@ -59,7 +59,7 @@ def hello_world():
                  "childNum": 0, "carrier": carrier})
             info = get_data(data, HEAD)
             if info.get('code') == -2:
-                return {"code": 400, "mes": "三次请求失败", "status": -2}
+                return {"code": 400, "mes": "三次请求失败,代理错误", "status": -2}
             if type(info) is not str:
                 return jsonify(get_info(xinxi=info, carrier=carrier, depDate=depDate, depCity=depCity, arrCity=arrCity))
             else:
