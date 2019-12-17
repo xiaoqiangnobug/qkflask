@@ -57,7 +57,9 @@ def fenxi_info(i):
             "cabinNum": "",
             "cabins": "",
             "fareBase": fares_info.get("lowChildPrice"),
-            "info": str({"\"supplier\"": "\"" + fares_info.get("originDomain", '') + "\""}),
+
+            "info": {r"\"supplier\"": r"\"" + fares_info.get("originDomain", '') + r"\""},
+
         }
     ]
 
@@ -120,7 +122,6 @@ def get_data(data, head, ):
 
 # 单程信息处理函数
 def get_info(xinxi: dict, carrier, depCity, depDate, arrCity):
-    # head_info = xinxi.get(random.choice(list(xinxi.keys())))
     jp = []
     jipiao = {
         "arrCity": arrCity,  # head_info.get('journey').get('trips')[0].get("flightSegments")[-1].get("arrCityCode"),
@@ -134,7 +135,7 @@ def get_info(xinxi: dict, carrier, depCity, depDate, arrCity):
         s = fenxi_info(i)
         if i.get('journey').get('trips')[0].get("flightSegments")[0].get("carrierCode") == carrier or carrier == None:
             jp.append(s)
-        jipiao.update({"routings": jp})
+        jipiao.update({"routings": jp, 'status': 0})
 
     if not jp:
         jipiao.update({"status": -1})
