@@ -59,11 +59,11 @@ def hello_world():
                  "childNum": 0, "carrier": carrier})
             info = get_data(data, HEAD)
             if info.get('code') == -2:
-                return {"code": 400, "mes": "三次请求失败,代理错误", "status": -2}
+                return jsonify(info)
             if type(info) is not str:
                 return jsonify(get_info(xinxi=info, carrier=carrier, depDate=depDate, depCity=depCity, arrCity=arrCity))
             else:
-                return jsonify({"code": 400})
+                return jsonify({"status": -3, "msg": "信息解析错误"})
         else:
             return jsonify({"code": 400, "mes": "信息参数格式不正确, 请确认参数全部存在且格式正确", "status": -2}, )
 

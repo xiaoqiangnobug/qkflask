@@ -103,7 +103,7 @@ def get_data(data, head, ):
         else:
             break
     if not response:
-        return {"code": -2}
+        return {"code": -2, "msg": "代理失效", "status": -2}
     response = requests.get(url, params=data, headers=head, proxies=self_ip if self_ip else None, timeout=10000)
     response.encoding = "utf-8"
 
@@ -114,8 +114,8 @@ def get_data(data, head, ):
             data = response.json().get("result")
             return data.get("flightPrices") if data else "数据解析失败"
         else:
-            return "数据获取失败!"
-    return "请求失败"
+            return {"code": -2, "msg": "请求成功，未返回任何数据", "status": -2}
+    return {"code": -2, "msg": "代理有效，抓取数据超时", "status": -2}
 
 
 # 单程信息处理函数
