@@ -5,6 +5,7 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN git clone https://github.com/xiaoqiangnobug/qkflask.git
 WORKDIR /usr/src/qkflask/
+RUN echo "{\"BJS\": \"\\u5317\u4eac\"}" > code_city.json
 RUN pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 RUN pip install gunicorn -i https://mirrors.aliyun.com/pypi/simple
 RUN chmod +x run.sh

@@ -1,6 +1,5 @@
 import requests
 import time
-import random
 from tool import get_ip
 
 t = time.time()
