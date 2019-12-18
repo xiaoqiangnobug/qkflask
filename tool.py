@@ -11,10 +11,10 @@ def get_city(code):
 
     if (not response.status_code == 200) and (not response.json()):
         return ''
-
     for i in response.json().get("result"):
         if i.get("code") == code.upper():
             city_code = i.get("key")
+            print(city_code)
     # 查询成功, 将数据返回并写入csv文件
     if not city_code:
         return ''

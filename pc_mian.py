@@ -46,7 +46,7 @@ def fenxi_info(i):
             "priceType": "PRICE",
             "tripType": "OW",
             "packageType": "Regular",
-            "adultPrice": fares_info.get("lowPrice"),
+            "adultPrice": fares_info.get("lowTotalPrice"),
             "adultTax": fares_info.get("tax"),
             "childPrice": "",
             "childTax": "",
@@ -73,9 +73,10 @@ def fenxi_info(i):
 # 请求头
 HEAD = {
     "accept": '*/*',
-    "cookie": "QN99=5468; QN1=O5cv5V3uLhBEwDpkBpWDAg==; QunarGlobal=10.86.213.149_-5d2b6b2c_16eea5f2445_2b19|1575890448884; QN269=9A8A8701180E11EA95BBFA163E531C43; _i=ueHd8Skw0r-X98gX4Dq-BjsVezAX; QN601=d8dc9670e8f19f0fc86a36373958daa5; QN48=82fe09c0-0eb2-4b83-b77a-f49083bf0914; fid=192fe013-61a7-405a-8092-9eac1baef328; SplitEnv=D; QN621=1490067914133%3DDEFAULT%26fr%3Dqunarindex; Alina=0482a684-1cf590-98446664-34a67222-228acb24d788; QN170=111.18.33.214_3e0094_0_JbA2eqru7o1VGxRySFfw%2BP2azQWhHSqBIiK01pFbIRA%3D; quinn=1265ac7a45f3777f668eb85c68529c14bfebabb879edbf7af1c3aec874ef0e41352c4d1f1168b203ec3e9dc5f7e65ecb; QN66=qunar; QN205=auto_4e0d874a; QN277=auto_4e0d874a; csrfToken=nAN9exzNjvPrTz2SBgEsqDV93yjZFIU4; QN163=0; F235=1575939888029; _vi=c2B3qTmlyoo7YSockUG5GLaFrPq9yn7qHaDiax_QM46x_QbM-6uksVSj7yz_OWfacyGgXkTTqakwh2rYBV05-BOi_cn8aKF7v1i1LkZFGzC5ypPO_gLh2zb6mm3F_-juC8zcbD5wesAhcndU1CVHmMNSI5bGfmXCJFnnFB47twCS; QN300=3w; QN271=747f406a-541a-4594-853c-b70f21edf350; QN267=02105388092ee1e11ae; _abck=b54e88f1-1ab7-47b2-b3d7-dc835a584896~0~1575954272169~-1~-1~-1",
+    "cookie": "QN99=5468; QN1=O5cv5V3uLhBEwDpkBpWDAg==; QunarGlobal=10.86.213.149_-5d2b6b2c_16eea5f2445_2b19|1575890448884; QN269=9A8A8701180E11EA95BBFA163E531C43; _i=ueHd8Skw0r-X98gX4Dq-BjsVezAX; QN601=d8dc9670e8f19f0fc86a36373958daa5; QN48=82fe09c0-0eb2-4b83-b77a-f49083bf0914; fid=192fe013-61a7-405a-8092-9eac1baef328; SplitEnv=D; QN621=1490067914133%3DDEFAULT%26fr%3Dqunarindex; QN170=111.18.33.214_3e0094_0_JbA2eqru7o1VGxRySFfw%2BP2azQWhHSqBIiK01pFbIRA%3D; quinn=1265ac7a45f3777f668eb85c68529c14bfebabb879edbf7af1c3aec874ef0e41352c4d1f1168b203ec3e9dc5f7e65ecb; SC1=f5cfefa304912bba4615c0604954eccb; SC18=; Alina=5762a981-98f041-78468038-60b02a91-198798698991; QN205=partner; QN277=partner; QN668=51%2C55%2C57%2C56%2C51%2C54%2C53%2C52%2C56%2C52%2C55%2C56%2C53; QN300=3w; QN66=qunar; QN163=0; F235=1576630904542; QN25=ba17d4e8-ba55-452d-9ccc-0bc5b52f29c1-9f992f90; QN43=2; QN42=zxel2304; _q=U.fguxdnr2168; _t=26519149; csrfToken=XTzqSU1KqzqjGkckTelajgqFmzKJebur; _s=s_KM7UQPLYFHQHLFUOEAVQT62SJY; _v=vSYP2vDZ82AMb87uySf7jpo2N-E8DxJaq_1nI3zBMeWv_dZ5FvliUafdGy2crum602dKromAsNbNIrc_J30RBUIga4Kv0W8YxumPVYK8bat2z2Mt_jhUGVOzVLdKJFLx2EHLqhe6XNURowDr9VdzpyUF-F-CvHgA_OrPgR7WS72u; QN44=fguxdnr2168; _vi=WhZtDaNjzKG-2kEh0j0-O3dgNCjfjHHk_ZmPW821iMMkVtCZt9bV-QYlje6A625WY-g9iEEvUgCy9CKugtKuLhfDGRvyMye7lseErYoXfg2EE80Ep66Z31LxYbS_nx9EAM0AeoIEWLQRkNnuSnvqvOky91Xo4COb5WboR-HS3VvQ; _abck=84f62cdb-8a25-4198-8f5d-8491e7c9c6f2~0~1576635341294~-1~-1~-1; QN267=0210538809218433f1e; QN271=83baff72-8c86-4584-b650-56abac34b29c",
     "referer": "https://flight.qunar.com/site/interroundtrip_compare.htm",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+    "pre": "7ba3f948-41e776-84493953-23be6a10-bf4ae677d440",
 
 }
 
@@ -91,11 +92,13 @@ data = {
     "ex_track": '',
     "_v": 8,
     "st": st,
+    "es": "4xeYghIB+vU4YhNeujUpYjNB6xUxYjNe6NPBXi+YYMxVWjJY6N======|1576633979136",
+    "queryId": "10.88.66.145:l:-17b00e7b:16f1498deed:498d"
 }
 
 
 # 爬取信息
-def get_data(data, head, ):
+def get_data(data, head):
     response = ''
     for _ in '123':
         self_ip = get_ip()
@@ -107,7 +110,7 @@ def get_data(data, head, ):
             break
     if not response:
         return {"code": -2, "msg": "代理失效", "status": -2}
-    response = requests.get(url, params=data, headers=head, proxies=self_ip if self_ip else None, timeout=10000)
+    # response = requests.get(url, params=data, headers=head, proxies=self_ip if self_ip else None, timeout=10)
     response.encoding = "utf-8"
 
     if response.status_code == 200:
